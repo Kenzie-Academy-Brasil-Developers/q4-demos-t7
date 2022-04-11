@@ -3,6 +3,9 @@
    "version": "1.0.0",
    "main": "dist/server.js",
    "license": "MIT",
+   "engines": {
+      "node": "17.6.0"
+   },
    "dependencies": {
       "bcrypt": "^5.0.1",
       "dotenv": "^16.0.0",
