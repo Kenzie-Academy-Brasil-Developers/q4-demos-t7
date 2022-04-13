@@ -1,0 +1,161 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Api Criada em Demo",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:3000/api",
+      "description": "base url"
+    }
+  ],
+  "paths": {
+    "/users/register": {
+      "post": {
+        "description": "Rota responsável pela criação de usuário, para criação de usuário admin é necessário um token de admin",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UserRegister"
+              },
+              "examples": {
+                "UserRegister": {
+                  "$ref": "#/components/examples/UserRegister"
+                },
+                "UserRegisterAdmin": {
+                  "$ref": "#/components/examples/UserRegisterAdmin"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "CREATED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/User"
+                },
+                "examples": {
+                  "User": {
+                    "$ref": "#/components/examples/User"
+                  },
+                  "UserAdmin": {
+                    "$ref": "#/components/examples/UserAdmin"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    },
+    "schemas": {
+      "User": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "isAdmin": {
+            "type": "boolean"
+          }
+        }
+      },
+      "UserRegister": {
+        "type": "object",
+        "required": [
+          "name",
+          "email",
+          "password"
+        ],
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "isAdmin": {
+            "type": "boolean",
+            "default": false
+          }
+        }
+      }
+    },
+    "examples": {
+      "UserRegister": {
+        "value": {
+          "name": "userExample",
+          "email": "example@mail.com",
+          "password": "1234!1234@"
+        }
+      },
+      "UserRegisterAdmin": {
+        "value": {
+          "name": "userExampleAdmin",
+          "email": "adminExample@mail.com",
+          "password": "1234!1234@",
+          "isAdmin": true
+        }
+      },
+      "User": {
+        "value": {
+          "id": "9d115119-ec32-4644-a295-eae2a7edb49b",
+          "name": "userExample",
+          "email": "example@mail.com",
+          "isAdmin": false
+        }
+      },
+      "UserAdmin": {
+        "value": {
+          "id": "9d115119-ec32-4644-a295-eae2a7edb49b",
+          "name": "userExampleAdmin",
+          "email": "adminExample@mail.com",
+          "isAdmin": true
+        }
+      }
+    },
+    "responses": {
+      "UnauthorizedError": {
+        "description": "UNAUTHORIZED",
+        "content": {
+          "application/json": {
+            "example": {
+              "error": "mission authorization token"
+            }
+          }
+        }
+      }
+    }
+  }
+}
